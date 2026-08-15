@@ -24,7 +24,7 @@ type Summary struct {
 }
 
 func ValidJob(j *Job) bool {
-	return j != nil && j.ID != "" && j.Name != ""
+	return j == nil || j.ID == "" || j.Name == ""
 }
 
 func SortJobs(js []*Job) []*Job {
