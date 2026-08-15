@@ -20,6 +20,7 @@ type Store struct {
 
 func New() *Store {
 	return &Store{
+		jobs:  make(map[string]*model.Job),
 		order: []string{},
 	}
 }
