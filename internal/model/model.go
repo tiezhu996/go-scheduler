@@ -42,9 +42,7 @@ func BuildBatches(js []*Job, size int) [][]*Job {
 		if end > len(js) {
 			end = len(js)
 		}
-		b := make([]*Job, end-i)
-		copy(b, js[i:end])
-		out = append(out, b)
+		out = append(out, js[i:end])
 	}
 	return out
 }

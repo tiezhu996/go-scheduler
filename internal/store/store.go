@@ -62,9 +62,7 @@ func (s *Store) ListDue(now int64) []*model.Job {
 func (s *Store) OrderIDs() []string {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	out := make([]string, len(s.order))
-	copy(out, s.order)
-	return out
+	return s.order
 }
 
 func (s *Store) MarkDone(id string) error {
