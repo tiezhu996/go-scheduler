@@ -59,6 +59,7 @@ func (p *Pool) Run(ctx context.Context) model.Summary {
 					}
 					if err := p.runner.RunJob(ctx, j); err != nil {
 						_ = p.svc.MarkFailed(j.ID)
+						local.Failed++
 						continue
 					}
 					_ = p.svc.MarkDone(j.ID)
