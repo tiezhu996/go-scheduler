@@ -36,7 +36,6 @@ func (p *Pool) Run(ctx context.Context) model.Summary {
 		for _, b := range batches {
 			select {
 			case <-ctx.Done():
-				close(ch)
 				return
 			case ch <- b:
 			}
