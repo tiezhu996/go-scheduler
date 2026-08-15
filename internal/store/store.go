@@ -2,6 +2,7 @@ package store
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 
 	"scheduler/internal/model"
@@ -29,7 +30,7 @@ func (s *Store) Create(j *model.Job) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if _, ok := s.jobs[j.ID]; ok {
-		return ErrJobExists
+		return fmt.Errorf("job %s exists", j.ID)
 	}
 	s.jobs[j.ID] = j
 	s.order = append(s.order, j.ID)
@@ -41,7 +42,7 @@ func (s *Store) Get(id string) (*model.Job, error) {
 	defer s.mu.RUnlock()
 	j, ok := s.jobs[id]
 	if !ok {
-		return nil, ErrJobNotFound
+		return nil, fmt.Errorf("job %s not found", id)
 	}
 	return j, nil
 }

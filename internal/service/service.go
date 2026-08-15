@@ -27,7 +27,7 @@ func (svc *Service) Submit(j *model.Job) error {
 		return errors.New("invalid job")
 	}
 	if err := svc.store.Create(j); err != nil {
-		return fmt.Errorf("submit %s: %w", j.ID, err)
+		return fmt.Errorf("submit %s: %v", j.ID, err)
 	}
 	return nil
 }
@@ -44,14 +44,14 @@ func (svc *Service) ListBatches() [][]*model.Job {
 
 func (svc *Service) MarkDone(id string) error {
 	if err := svc.store.MarkDone(id); err != nil {
-		return fmt.Errorf("mark done %s: %w", id, err)
+		return fmt.Errorf("mark done %s: %v", id, err)
 	}
 	return nil
 }
 
 func (svc *Service) MarkFailed(id string) error {
 	if err := svc.store.MarkFailed(id); err != nil {
-		return fmt.Errorf("mark failed %s: %w", id, err)
+		return fmt.Errorf("mark failed %s: %v", id, err)
 	}
 	return nil
 }
