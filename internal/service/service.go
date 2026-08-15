@@ -39,15 +39,7 @@ func (svc *Service) ListDue(now int64) []*model.Job {
 func (svc *Service) ListBatches() [][]*model.Job {
 	js := svc.store.ListDue(1<<62 - 1)
 	model.SortJobs(js)
-	out := make([][]*model.Job, 0)
-	for i := 0; i < len(js); i += svc.batchSize {
-		end := i + svc.batchSize
-		if end > len(js) {
-			end = len(js)
-		}
-		out = append(out, js[i:end])
-	}
-	return out
+	return model.BuildBatches(js, svc.batchSize)
 }
 
 func (svc *Service) MarkDone(id string) error {
