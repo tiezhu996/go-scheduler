@@ -42,15 +42,21 @@ func (p *Pool) Run(ctx context.Context) model.Summary {
 		}
 	}()
 
+	var mu sync.Mutex
 	var sum model.Summary
 
 	for i := 0; i < p.workers; i++ {
+		wg.Add(1)
 		go func() {
-			wg.Add(1)
 			defer wg.Done()
 			for batch := range ch {
 				var local model.Summary
 				for _, j := range batch {
+					select {
+					case <-ctx.Done():
+						return
+					default:
+					}
 					if err := p.runner.RunJob(ctx, j); err != nil {
 						_ = p.svc.MarkFailed(j.ID)
 						local.Failed++
@@ -59,7 +65,9 @@ func (p *Pool) Run(ctx context.Context) model.Summary {
 					_ = p.svc.MarkDone(j.ID)
 					local.Ran++
 				}
+				mu.Lock()
 				sum = model.MergeSummary(sum, local)
+				mu.Unlock()
 			}
 		}()
 	}

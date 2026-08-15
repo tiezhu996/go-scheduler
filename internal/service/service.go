@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 
 	"scheduler/internal/config"
@@ -22,6 +23,9 @@ func New(s *store.Store, cfg *config.Config) *Service {
 }
 
 func (svc *Service) Submit(j *model.Job) error {
+	if !model.ValidJob(j) {
+		return errors.New("invalid job")
+	}
 	if err := svc.store.Create(j); err != nil {
 		return fmt.Errorf("submit %s: %w", j.ID, err)
 	}

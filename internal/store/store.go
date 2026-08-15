@@ -68,6 +68,8 @@ func (s *Store) OrderIDs() []string {
 }
 
 func (s *Store) MarkDone(id string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	j, ok := s.jobs[id]
 	if !ok {
 		return ErrJobNotFound
@@ -77,6 +79,8 @@ func (s *Store) MarkDone(id string) error {
 }
 
 func (s *Store) MarkFailed(id string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	j, ok := s.jobs[id]
 	if !ok {
 		return ErrJobNotFound
