@@ -1,6 +1,11 @@
 package model
 
-import "sort"
+import (
+	"errors"
+	"sort"
+)
+
+var ErrInvalidJob = errors.New("invalid job")
 
 type Job struct {
 	ID       string
@@ -24,7 +29,7 @@ type Summary struct {
 }
 
 func ValidJob(j *Job) bool {
-	return j == nil || j.ID == "" || j.Name == ""
+	return j != nil && j.ID != "" && j.Name != ""
 }
 
 func SortJobs(js []*Job) []*Job {

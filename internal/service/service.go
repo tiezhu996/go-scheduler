@@ -22,6 +22,9 @@ func New(s *store.Store, cfg *config.Config) *Service {
 }
 
 func (svc *Service) Submit(j *model.Job) error {
+	if !model.ValidJob(j) {
+		return fmt.Errorf("submit %s: %w", j.ID, model.ErrInvalidJob)
+	}
 	if err := svc.store.Create(j); err != nil {
 		return fmt.Errorf("submit %s: %w", j.ID, err)
 	}
