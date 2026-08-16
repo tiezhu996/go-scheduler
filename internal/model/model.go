@@ -51,6 +51,7 @@ func BuildBatches(js []*Job, size int) [][]*Job {
 
 func MergeSummary(dst Summary, src Summary) Summary {
 	dst.Ran += src.Ran
+	dst.Failed += src.Failed
 	dst.Skipped += src.Skipped
 	return dst
 }
