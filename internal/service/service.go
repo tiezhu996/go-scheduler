@@ -45,7 +45,9 @@ func (svc *Service) ListBatches() [][]*model.Job {
 		if end > len(js) {
 			end = len(js)
 		}
-		out = append(out, js[i:end])
+		batch := make([]*model.Job, end-i)
+		copy(batch, js[i:end])
+		out = append(out, batch)
 	}
 	return out
 }
